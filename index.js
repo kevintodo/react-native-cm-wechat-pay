@@ -10,7 +10,7 @@ export default class XPay {
     static setWxId(id) {
         NativeModules.PutiPay.setWxId(id);
     }
-    
+
 
     /**
      * 微信支付

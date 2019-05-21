@@ -40,7 +40,7 @@ cm wechat pay
 #### iOS
 
 1. TARGET -> Build Phases -> Linked Binary With Libraries 添加以下系统库
-![image](https://github.com/puti94/react-native-puti-pay/blob/master/screenshot/WX20171125-142402.png)
+![image](./screenshot/WX20171125-142402.png)
 
 2. 在项目中的info.plist中加入应用白名单，右键info.plist选择source code打开(plist具体设置在Build Setting -> Packaging -> Info.plist File可获取plist路径) :
 
@@ -56,7 +56,7 @@ cm wechat pay
 
 3. 设置 URL Scheme URL Scheme是通过系统找到并跳转对应app的设置，通过向项目中的info.plist文件中加入URL types可使用第三方平台所注册的appkey信息向系统注册你的app，当跳转到第三方应用支付后，可直接跳转回你的app。微信填写微信ID,支付宝也建议添加ap+加支付宝应用id的形式以免冲突。
 
-   ![image](https://github.com/puti94/react-native-puti-pay/blob/master/screenshot/WX20171125-142504.png)
+   ![image](./screenshot/WX20171125-142504.png)
 
 4. 在入口文件AppDelegate.m下设置回调
 
