@@ -1,0 +1,24 @@
+{
+  "name": "react-native-cm-wechat-pay",
+  "version": "1.0.0",
+  "description": "微信支付react-native",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevintodo/react-native-cm-wechat-pay.git"
+  },
+  "keywords": [
+    "react-native",
+    "wechat",
+    "pay"
+  ],
+  "author": "kyle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevintodo/react-native-cm-wechat-pay/issues"
+  },
+  "homepage": "https://github.com/kevintodo/react-native-cm-wechat-pay#readme"
+}
