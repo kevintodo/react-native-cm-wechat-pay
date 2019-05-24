@@ -8,7 +8,7 @@ export default class XPay {
      * @param id
      */
     static setWxId(id) {
-        NativeModules.PutiPay.setWxId(id);
+        NativeModules.RNWechatPay.setWxId(id);
     }
 
 
@@ -31,6 +31,6 @@ export default class XPay {
      *                          -2: 原因 用户取消,无需处理。发生场景：用户不支付了，点击取消，返回APP
      */
     static wxPay(params, callBack) {
-        NativeModules.PutiPay.wxPay(params, callBack)
+        NativeModules.RNWechatPay.wxPay(params, callBack)
     }
 }
