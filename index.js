@@ -11,6 +11,9 @@ export default class XPay {
         NativeModules.RNWechatPay.setWxId(id);
     }
 
+    static wxPayIsIntall(callback) {
+        NativeModules.RNWechatPay.wxPayIsIntall(callback);
+    }
 
     /**
      * 微信支付

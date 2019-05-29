@@ -33,7 +33,7 @@ RCT_EXPORT_MODULE(RNWechatPay)
 {
     NSString * aURLString =  [aNotification userInfo][@"url"];
     NSURL * aURL = [NSURL URLWithString:aURLString];
-    
+
     if ([WXApi handleOpenURL:aURL delegate:self])
     {
         return YES;
@@ -46,10 +46,15 @@ RCT_EXPORT_METHOD(setWxId:(NSString *)wxid){
     wxOpenId = wxid;
     [WXApi registerApp:wxid];
 }
+RCT_EXPORT_METHOD(wxPayIsIntall:(RCTResponseSenderBlock)callback)
+{
+    BOOL isInstall = [WXApi isWXAppInstalled];
+    callback(@[@(isInstall)]);
+}
 
 RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock)callback)
 {
-    
+
     NSLog(@"wxPay:%@", params);
     //需要创建这个支付对象
     PayReq *req   = [[PayReq alloc] init];
