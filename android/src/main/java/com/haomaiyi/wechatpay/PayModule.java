@@ -37,10 +37,12 @@ public class PayModule extends ReactContextBaseJavaModule {
     public void setWxId(String id) {
         WX_APPID = id;
     }
+
     @ReactMethod
-    public void wxPayIsIntall:(final Callback callback)
+    public void wxPayIsIntall(final Callback callback)
     {
-        boolean isInstall = WXApi.isWXAppInstalled();
+        IWXAPI api = WXAPIFactory.createWXAPI(getCurrentActivity(), WX_APPID);
+        boolean isInstall = api.isWXAppInstalled();
         callback.invoke(isInstall);
     }
 
