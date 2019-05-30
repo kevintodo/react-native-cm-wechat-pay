@@ -269,7 +269,7 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(inherited)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RNWechatPay/lib",
@@ -292,7 +292,7 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(inherited)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RNWechatPay/lib",

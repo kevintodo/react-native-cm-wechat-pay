@@ -24,6 +24,11 @@ RCT_EXPORT_MODULE(RNWechatPay)
     return self;
 }
 
+- (dispatch_queue_t)methodQueue
+{
+    return dispatch_get_main_queue();
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
