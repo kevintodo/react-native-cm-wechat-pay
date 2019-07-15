@@ -102,6 +102,35 @@ RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock
             wxCallBack = nil;
         }
     }
+    
+    if([resp isKindOfClass:[SendAuthResp class]]){
+        if (wxCallBack != nil) {
+            NSMutableDictionary *data = [NSMutableDictionary new];
+            [data setValue:resp.errStr forKey:@"errStr"];
+            [data setValue:@(resp.type) forKey:@"type"];
+            [data setValue:@(resp.errCode) forKey:@"errCode"];
+            wxCallBack([[NSArray alloc] initWithObjects:data, nil]);
+            wxCallBack = nil;
+        }
+    }
+    
 }
+
+
+
+RCT_EXPORT_METHOD(wxLogin:(NSDictionary *)params  callback:(RCTResponseSenderBlock)callback)
+{
+    NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
+    NSString *kAuthState = @"xxx";
+    SendAuthReq* req = [[SendAuthReq alloc] init];
+    req.scope = kAuthScope; // @"post_timeline,sns"
+    req.state = kAuthState;
+    req.openID = wxOpenId;
+    
+    return [WXApi sendAuthReq:req
+               viewController:nil
+                     delegate:[WXApiManager sharedManager]];
+}
+
 
 @end
