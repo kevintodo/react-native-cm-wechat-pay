@@ -11,6 +11,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -68,6 +69,7 @@ public abstract class XWXPayEntryActivity extends Activity implements IWXAPIEven
         }
 
         if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+                if (callback != null) {
         			SendAuth.Resp authResp = (SendAuth.Resp)resp;
         			final String code = authResp.code;
         			WritableMap data = Arguments.createMap();
@@ -77,7 +79,8 @@ public abstract class XWXPayEntryActivity extends Activity implements IWXAPIEven
                                     data.putString("code", "" + code);
                                     callback.callBack(data);
                                     callback = null;
-        			finish()
+        			finish();
         		}
+        }
     }
 }

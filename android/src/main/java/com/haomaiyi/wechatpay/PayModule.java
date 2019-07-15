@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -73,11 +74,10 @@ public class PayModule extends ReactContextBaseJavaModule {
         public void wxLogin(ReadableMap params, final Callback callback) {
 
             IWXAPI api = WXAPIFactory.createWXAPI(getCurrentActivity(), WX_APPID);
-            String autoScop = params.getString("autoScop");
+            String autoScop = params.getString("authScope");
             final SendAuth.Req req = new SendAuth.Req();
             req.scope = autoScop;
             req.state = "yuexin_login";
-            req.openID = WX_APPID;
             XWXPayEntryActivity.callback = new WXPayCallBack() {
                             @Override
                             public void callBack(WritableMap result) {
