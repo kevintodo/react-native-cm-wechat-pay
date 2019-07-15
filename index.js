@@ -36,4 +36,21 @@ export default class XPay {
     static wxPay(params, callBack) {
         NativeModules.RNWechatPay.wxPay(params, callBack)
     }
+
+
+    /**
+     * 微信授权
+     * 传入参数示例
+     * {
+        authScope:snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact,
+       }
+     *
+     *
+     * @param params  参数
+     * @param callBack 回调结果码 0:获取code 成功,
+     *
+     */
+    static wxLogin(params, callBack) {
+        NativeModules.RNWechatPay.wxLogin(params, callBack)
+    }
 }

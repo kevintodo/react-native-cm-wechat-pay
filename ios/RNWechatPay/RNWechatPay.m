@@ -38,7 +38,7 @@ RCT_EXPORT_MODULE(RNWechatPay)
 {
     NSString * aURLString =  [aNotification userInfo][@"url"];
     NSURL * aURL = [NSURL URLWithString:aURLString];
-
+    
     if ([WXApi handleOpenURL:aURL delegate:self])
     {
         return YES;
@@ -59,7 +59,7 @@ RCT_EXPORT_METHOD(wxPayIsIntall:(RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock)callback)
 {
-
+    
     NSLog(@"wxPay:%@", params);
     //需要创建这个支付对象
     PayReq *req   = [[PayReq alloc] init];
@@ -104,11 +104,17 @@ RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock
     }
     
     if([resp isKindOfClass:[SendAuthResp class]]){
+        SendAuthResp *aReq = (SendAuthResp*)resp;
+        NSLog(@"%@,%@",aReq.code,aReq.state);
         if (wxCallBack != nil) {
             NSMutableDictionary *data = [NSMutableDictionary new];
             [data setValue:resp.errStr forKey:@"errStr"];
             [data setValue:@(resp.type) forKey:@"type"];
             [data setValue:@(resp.errCode) forKey:@"errCode"];
+            
+            [data setValue:aReq.code forKey:@"code"];
+            [data setValue:aReq.state forKey:@"state"];
+            
             wxCallBack([[NSArray alloc] initWithObjects:data, nil]);
             wxCallBack = nil;
         }
@@ -120,16 +126,19 @@ RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock
 
 RCT_EXPORT_METHOD(wxLogin:(NSDictionary *)params  callback:(RCTResponseSenderBlock)callback)
 {
-    NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
-    NSString *kAuthState = @"xxx";
+    
+    NSString *kAuthScope = params[@"authScope"];
+    //@"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
+    NSString *kAuthState = @"yuexin_login";
     SendAuthReq* req = [[SendAuthReq alloc] init];
     req.scope = kAuthScope; // @"post_timeline,sns"
     req.state = kAuthState;
     req.openID = wxOpenId;
     
-    return [WXApi sendAuthReq:req
-               viewController:nil
-                     delegate:[WXApiManager sharedManager]];
+    [WXApi sendAuthReq:req
+        viewController:nil
+              delegate:self];
+    wxCallBack = callback;
 }
 
 
