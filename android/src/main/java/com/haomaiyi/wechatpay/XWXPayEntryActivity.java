@@ -66,5 +66,18 @@ public abstract class XWXPayEntryActivity extends Activity implements IWXAPIEven
             callback = null;
             finish(); // ----支付结束关闭本界面
         }
+
+        if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+        			SendAuth.Resp authResp = (SendAuth.Resp)resp;
+        			final String code = authResp.code;
+        			WritableMap data = Arguments.createMap();
+                                    data.putString("errStr", resp.errStr);
+                                    data.putString("errCode", "" + resp.errCode);
+                                    data.putString("type", "" + resp.getType());
+                                    data.putString("code", "" + code);
+                                    callback.callBack(data);
+                                    callback = null;
+        			finish()
+        		}
     }
 }

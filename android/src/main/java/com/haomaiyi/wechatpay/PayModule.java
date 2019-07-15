@@ -69,4 +69,22 @@ public class PayModule extends ReactContextBaseJavaModule {
         api.sendReq(req);
     }
 
+    @ReactMethod
+        public void wxLogin(ReadableMap params, final Callback callback) {
+
+            IWXAPI api = WXAPIFactory.createWXAPI(getCurrentActivity(), WX_APPID);
+            String autoScop = params.getString("autoScop");
+            final SendAuth.Req req = new SendAuth.Req();
+            req.scope = autoScop;
+            req.state = "yuexin_login";
+            req.openID = WX_APPID;
+            XWXPayEntryActivity.callback = new WXPayCallBack() {
+                            @Override
+                            public void callBack(WritableMap result) {
+                                callback.invoke(result);
+                            }
+                        };
+            api.sendReq(req);
+        }
+
 }
