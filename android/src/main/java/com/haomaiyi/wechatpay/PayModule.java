@@ -1,6 +1,11 @@
 package com.haomaiyi.wechatpay;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -9,6 +14,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -22,6 +28,7 @@ public class PayModule extends ReactContextBaseJavaModule {
 
 
     public static String WX_APPID = "";
+    public static IWXAPI wxApi = null;
 
 
     public PayModule(ReactApplicationContext reactContext) {
@@ -37,19 +44,19 @@ public class PayModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setWxId(String id) {
         WX_APPID = id;
+        wxApi = WXAPIFactory.createWXAPI(getCurrentActivity(), WX_APPID);
     }
 
     @ReactMethod
     public void wxPayIsIntall(final Callback callback)
     {
-        IWXAPI api = WXAPIFactory.createWXAPI(getCurrentActivity(), WX_APPID);
-        boolean isInstall = api.isWXAppInstalled();
+
+        boolean isInstall = wxApi.isWXAppInstalled();
         callback.invoke(isInstall);
     }
 
     @ReactMethod
     public void wxPay(ReadableMap params, final Callback callback) {
-        IWXAPI api = WXAPIFactory.createWXAPI(getCurrentActivity(), WX_APPID);
         //data  根据服务器返回的json数据创建的实体类对象
         PayReq req = new PayReq();
         req.appId = WX_APPID;
@@ -59,7 +66,7 @@ public class PayModule extends ReactContextBaseJavaModule {
         req.nonceStr = params.getString("nonceStr");
         req.timeStamp = params.getString("timeStamp");
         req.sign = params.getString("sign");
-        api.registerApp(WX_APPID);
+        wxApi.registerApp(WX_APPID);
         XWXPayEntryActivity.callback = new WXPayCallBack() {
             @Override
             public void callBack(WritableMap result) {
@@ -67,24 +74,34 @@ public class PayModule extends ReactContextBaseJavaModule {
             }
         };
         //发起请求
-        api.sendReq(req);
+        wxApi.sendReq(req);
     }
 
     @ReactMethod
         public void wxLogin(ReadableMap params, final Callback callback) {
 
-            IWXAPI api = WXAPIFactory.createWXAPI(getCurrentActivity(), WX_APPID);
-            String autoScop = params.getString("authScope");
+            wxApi.registerApp(WX_APPID);
+        //建议动态监听微信启动广播进行注册到微信
+//        getCurrentActivity().registerReceiver(new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//
+//                // 将该app注册到微信
+//                wxApi.registerApp(WX_APPID);
+//            }
+//        }, new IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP));
+
+        String authScope = params.getString("authScope");
             final SendAuth.Req req = new SendAuth.Req();
-            req.scope = autoScop;
-            req.state = "yuexin_login";
+            req.scope = authScope;
+            req.state = "com.hmy_app";
             XWXPayEntryActivity.callback = new WXPayCallBack() {
                             @Override
                             public void callBack(WritableMap result) {
                                 callback.invoke(result);
                             }
                         };
-            api.sendReq(req);
+            wxApi.sendReq(req);
         }
 
 }

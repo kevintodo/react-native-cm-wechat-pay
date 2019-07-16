@@ -29,7 +29,7 @@ public abstract class XWXPayEntryActivity extends Activity implements IWXAPIEven
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
-        api = WXAPIFactory.createWXAPI(this, PayModule.WX_APPID);
+        api = PayModule.wxApi;
         api.handleIntent(getIntent(), this);
     }
 
@@ -59,13 +59,12 @@ public abstract class XWXPayEntryActivity extends Activity implements IWXAPIEven
                 data.putString("errCode", "" + resp.errCode);
                 data.putString("type", "" + resp.getType());
                 callback.callBack(data);
+                callback = null;
             }
             //resp.errCode == 0 支付成功
             // resp.errCode == -1
             // 原因：支付错误,可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等
             // resp.errCode == -2 原因 用户取消,无需处理。发生场景：用户不支付了，点击取消，返回APP
-            callback = null;
-            finish(); // ----支付结束关闭本界面
         }
 
         if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
@@ -79,8 +78,9 @@ public abstract class XWXPayEntryActivity extends Activity implements IWXAPIEven
                                     data.putString("code", "" + code);
                                     callback.callBack(data);
                                     callback = null;
-        			finish();
         		}
         }
+
+        finish();
     }
 }
